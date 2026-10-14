@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redragon Studio — K530 Draconic</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Window Drag Titlebar -->
+    <header class="window-header">
+      <div class="drag-region"></div>
+      <div class="brand">
+        <div class="dragon-logo">
+          <svg viewBox="0 0 40 40" class="dragon-svg">
+            <path d="M20 2 L26 12 L38 8 L32 20 L38 28 L28 28 L24 38 L20 28 L16 38 L12 28 L2 28 L8 20 L2 8 L14 12 Z" fill="#ff1e38"/>
+            <circle cx="16" cy="16" r="2.5" fill="#12131a"/>
+            <circle cx="24" cy="16" r="2.5" fill="#12131a"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>REDRAGON <span>STUDIO</span></h1>
+          <span class="model-badge">K530 DRACONIC 60% • macOS</span>
+        </div>
+      </div>
+
+      <div class="device-status-badge" id="deviceStatusBadge">
+        <span class="status-indicator connected" id="statusIndicator"></span>
+        <div class="status-text">
+          <strong id="deviceNameDisplay">Redragon K530</strong>
+          <span id="connectionTypeDisplay">Connected • BT5.0 KB (BLE)</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Top Keyboard Visualizer (Visible in all tabs or collapsible) -->
+    <section class="visualizer-section">
+      <div class="visualizer-header">
+        <div class="visualizer-title">
+          <span class="section-tag">LIVE VISUALIZER</span>
+          <h2>K530 Draconic 61-Key Layout</h2>
+        </div>
+        <div class="layer-pill-selector">
+          <button class="layer-btn active" data-layer="base" id="layerBaseBtn">
+            <span class="btn-dot"></span> Default (Base)
+          </button>
+          <button class="layer-btn" data-layer="fn1" id="layerFn1Btn">
+            <span class="btn-dot fn1-dot"></span> Fn1 (Navigation & F-Keys)
+          </button>
+          <button class="layer-btn" data-layer="fn2" id="layerFn2Btn">
+            <span class="btn-dot fn2-dot"></span> Fn2 (RGB & Hardware)
+          </button>
+        </div>
+      </div>
+
+      <!-- 60% Keyboard Frame -->
+      <div class="keyboard-casing" id="keyboardCasing">
+        <div class="keyboard-plate" id="keyboardPlate">
+          <!-- Keys generated via JS -->
+        </div>
+      </div>
+
+      <div class="visualizer-footer">
+        <div class="active-effect-info" id="activeEffectInfo">
+          <span class="glow-tag">RGB EFFECT:</span>
+          <strong id="currentEffectName">Neon Stream</strong>
+          <span class="divider">|</span>
+          <span class="color-tag">PALETTE:</span>
+          <span class="color-preview-circle" id="colorPreviewCircle"></span>
+          <span id="currentColorName">Spectrum Rainbow</span>
+        </div>
+        <div class="key-inspect-tooltip" id="keyInspectTooltip">
+          Hover or click any key to inspect functions across layers
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Navigation Tabs -->
+    <nav class="main-tabs">
+      <button class="tab-btn active" data-tab="tab-layout">
+        <span class="tab-icon">⌘</span>
+        <span>Mac Layout & Remap</span>
+      </button>
+      <button class="tab-btn" data-tab="tab-rgb">
+        <span class="tab-icon">💡</span>
+        <span>RGB Lighting Studio</span>
+      </button>
+      <button class="tab-btn" data-tab="tab-layers">
+        <span class="tab-icon">🗺️</span>
+        <span>60% Layer Explorer</span>
+      </button>
+      <button class="tab-btn" data-tab="tab-cheatsheet">
+        <span class="tab-icon">⚡</span>
+        <span>Hardware Cheatsheet</span>
+      </button>
+    </nav>
+
+    <!-- Tab Contents -->
+    <main class="tab-content-area">
+
+      <!-- TAB 1: Mac Layout & Remapping -->
+      <div class="tab-pane active" id="tab-layout">
+        <div class="settings-grid">
+          <div class="setting-card highlight-card">
+            <div class="card-header">
+              <div class="icon-wrap">⌘</div>
+              <div>
+                <h3>Mac Command / Option Key Swap</h3>
+                <p>Aligns your bottom-left row with Apple's standard physical layout.</p>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" id="swapCmdOptToggle" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+            <div class="card-body">
+              <div class="layout-comparison">
+                <div class="comp-box">
+                  <span class="box-label">Windows Default Layout (Unmodified)</span>
+                  <div class="comp-keys">
+                    <span class="mock-key">Ctrl</span>
+                    <span class="mock-key win-key">Win (Cmd)</span>
+                    <span class="mock-key alt-key">Alt (Opt)</span>
+                    <span class="mock-key space-key">Space</span>
+                  </div>
+                  <span class="comp-subtext">❌ Muscle memory broken: Alt is next to Space</span>
+                </div>
+                <div class="comp-arrow">➔</div>
+                <div class="comp-box recommended">
+                  <span class="box-label">Mac Optimized Layout (Recommended)</span>
+                  <div class="comp-keys">
+                    <span class="mock-key">Ctrl</span>
+                    <span class="mock-key opt-key active-glow">Option (⌥)</span>
+                    <span class="mock-key cmd-key active-glow">Command (⌘)</span>
+                    <span class="mock-key space-key">Space</span>
+                  </div>
+                  <span class="comp-subtext">✅ Perfect for Cmd+C, Cmd+V, Cmd+Tab, Cmd+Space</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Secondary Options Card -->
+          <div class="setting-card">
+            <div class="card-header">
+              <div class="icon-wrap">⚙️</div>
+              <div>
+                <h3>Modifier & Caps Lock Customization</h3>
+                <p>Fine-tune modifier behavior for development and typing.</p>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="form-row">
+                <div class="form-label">
+                  <strong>Right Modifiers Swap</strong>
+                  <span>Swap Right Alt (Option) and Right Menu / Win key</span>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="swapRightModToggle">
+                  <span class="slider"></span>
+                </label>
+              </div>
+
+              <div class="form-row">
+                <div class="form-label">
+                  <strong>Caps Lock Behavior</strong>
+                  <span>Essential for 60% boards where Esc is shared with ` / ~</span>
+                </div>
+                <select class="custom-select" id="capsLockSelect">
+                  <option value="normal">Standard Caps Lock</option>
+                  <option value="escape">Vim / Developer Escape (Esc)</option>
+                  <option value="control">Control (⌃) Key</option>
+                </select>
+              </div>
+
+              <div class="form-row">
+                <div class="form-label">
+                  <strong>Apply Automatically on Mac Login</strong>
+                  <span>Installs a user LaunchAgent so mappings persist seamlessly after reboot</span>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="launchOnLoginToggle" checked>
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <div class="card-actions">
+              <button class="btn btn-primary" id="applyMappingBtn">
+                <span>Save & Apply to Redragon</span>
+              </button>
+              <button class="btn btn-secondary" id="resetMappingBtn">
+                <span>Reset to Windows Default</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- System Integration Card -->
+          <div class="setting-card info-card">
+            <div class="card-header">
+              <div class="icon-wrap">🛡️</div>
+              <div>
+                <h3>Native Hardware Matching Technology</h3>
+                <p>Precision-targeted to Redragon K530 without affecting your built-in keyboard.</p>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="info-pills">
+                <div class="pill">
+                  <span class="p-title">Target Vendor ID:</span>
+                  <span class="p-val">0x000E (Beken Corp)</span>
+                </div>
+                <div class="pill">
+                  <span class="p-title">Target Product ID:</span>
+                  <span class="p-val">0x3412 (13330)</span>
+                </div>
+                <div class="pill">
+                  <span class="p-title">Target Identifier:</span>
+                  <span class="p-val">BT5.0 KB</span>
+                </div>
+                <div class="pill">
+                  <span class="p-title">Driverless:</span>
+                  <span class="p-val">Zero kernel extensions required</span>
+                </div>
+              </div>
+              <p class="small-desc">
+                Your MacBook's internal keyboard and other connected devices remain 100% untouched. All customizations apply exclusively to the Redragon K530.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 2: RGB Lighting Studio -->
+      <div class="tab-pane" id="tab-rgb">
+        <div class="rgb-studio-layout">
+          <div class="rgb-controls-panel">
+            <div class="panel-section">
+              <div class="section-header">
+                <h3>1. Select Lighting Effect</h3>
+                <span class="sub-hint">Cycle on board: <strong>Fn2 + 9</strong></span>
+              </div>
+              <div class="mode-grid" id="modeGrid">
+                <!-- Modes dynamically populated -->
+              </div>
+            </div>
+
+            <div class="panel-section">
+              <div class="section-header">
+                <h3>2. Hardware Color Presets</h3>
+                <span class="sub-hint">Cycle on board: <strong>Fn2 + 8</strong></span>
+              </div>
+              <div class="color-palette" id="colorPalette">
+                <!-- Colors dynamically populated -->
+              </div>
+            </div>
+
+            <div class="panel-section sliders-section">
+              <div class="slider-control">
+                <div class="slider-label">
+                  <span>Backlight Brightness</span>
+                  <span class="shortcut-tip">Shortcut: <strong>Fn2 + -</strong> / <strong>Fn2 + =</strong></span>
+                </div>
+                <input type="range" min="1" max="5" value="5" id="brightnessSlider" class="custom-range">
+                <div class="slider-scale">
+                  <span>20%</span>
+                  <span>40%</span>
+                  <span>60%</span>
+                  <span>80%</span>
+                  <span>100%</span>
+                </div>
+              </div>
+
+              <div class="slider-control">
+                <div class="slider-label">
+                  <span>Animation Speed</span>
+                  <span class="shortcut-tip">Shortcut: <strong>Fn2 + [</strong> / <strong>Fn2 + ]</strong></span>
+                </div>
+                <input type="range" min="1" max="5" value="3" id="speedSlider" class="custom-range">
+                <div class="slider-scale">
+                  <span>Slow</span>
+                  <span>Normal</span>
+                  <span>Fast</span>
+                  <span>Hyper</span>
+                  <span>Ultra</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="diy-guide-panel">
+            <div class="diy-card">
+              <div class="diy-header">
+                <span class="diy-badge">DIY MODE</span>
+                <h3>Custom Per-Key RGB Lighting</h3>
+                <p>Record your own custom color scheme directly to the keyboard's flash memory without any software needed on Windows.</p>
+              </div>
+              <ol class="diy-steps">
+                <li>
+                  <span class="step-num">1</span>
+                  <div class="step-content">
+                    <strong>Enter Recording Mode</strong>
+                    <p>Press <kbd>Fn2</kbd> + <kbd>\</kbd>. The keyboard LEDs will start blinking to indicate recording is ready.</p>
+                  </div>
+                </li>
+                <li>
+                  <span class="step-num">2</span>
+                  <div class="step-content">
+                    <strong>Set Per-Key Colors</strong>
+                    <p>Tap any key repeatedly to cycle through its available LED colors until you get the color you want.</p>
+                  </div>
+                </li>
+                <li>
+                  <span class="step-num">3</span>
+                  <div class="step-content">
+                    <strong>Save & Exit</strong>
+                    <p>Press <kbd>Fn2</kbd> + <kbd>\</kbd> once more. Your custom layout is saved directly to the K530 onboard memory!</p>
+                  </div>
+                </li>
+              </ol>
+              <div class="diy-footer-tip">
+                💡 <em>Tip: You can turn the backlight completely off anytime with <kbd>Fn2</kbd> + <kbd>0</kbd> to maximize Bluetooth battery life.</em>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 3: 60% Layer Explorer -->
+      <div class="tab-pane" id="tab-layers">
+        <div class="layers-container">
+          <div class="layer-cards-grid">
+            <div class="layer-card base-card">
+              <div class="l-card-header">
+                <span class="l-badge">LAYER 0</span>
+                <h3>Standard Typing Layer</h3>
+                <p>Active when no Fn key is held.</p>
+              </div>
+              <div class="l-card-content">
+                <ul>
+                  <li>Full 61-key standard ANSI layout.</li>
+                  <li>When Mac Mode is ON: Left Alt acts as <strong>Command ⌘</strong> and Left Win acts as <strong>Option ⌥</strong>.</li>
+                  <li>Backspace, Space, Enter, Tab in standard locations.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="layer-card fn1-card">
+              <div class="l-card-header">
+                <span class="l-badge fn1-badge">LAYER 1 (Fn1)</span>
+                <h3>Navigation & Function Layer</h3>
+                <p>Hold <kbd>Fn1</kbd> or tap Magic Fn.</p>
+              </div>
+              <div class="l-card-content">
+                <ul>
+                  <li><kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd> ➔ <strong>Arrow Keys (↑ ← ↓ →)</strong></li>
+                  <li><kbd>1</kbd> through <kbd>=</kbd> ➔ <strong>F1 through F12</strong></li>
+                  <li><kbd>[</kbd> / <kbd>]</kbd> ➔ <strong>Home / End</strong></li>
+                  <li><kbd>;</kbd> / <kbd>'</kbd> ➔ <strong>Page Up / Page Down</strong></li>
+                  <li><kbd>.</kbd> / <kbd>/</kbd> ➔ <strong>Delete / Insert</strong></li>
+                  <li><kbd>P</kbd> / <kbd>[</kbd> / <kbd>]</kbd> ➔ <strong>PrtSc / ScrLk / Pause</strong></li>
+                  <li><kbd>Q</kbd> / <kbd>W</kbd> / <kbd>E</kbd> ➔ <strong>Bluetooth Devices (BT1 / BT2 / BT3)</strong></li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="layer-card fn2-card">
+              <div class="l-card-header">
+                <span class="l-badge fn2-badge">LAYER 2 (Fn2)</span>
+                <h3>RGB & Hardware Settings</h3>
+                <p>Hold <kbd>Fn2</kbd> for hardware functions.</p>
+              </div>
+              <div class="l-card-content">
+                <ul>
+                  <li><kbd>9</kbd> ➔ <strong>Switch Lighting Mode (13 Animations)</strong></li>
+                  <li><kbd>8</kbd> ➔ <strong>Switch Backlight Color (8 Presets)</strong></li>
+                  <li><kbd>0</kbd> ➔ <strong>Turn Backlight On / Off</strong></li>
+                  <li><kbd>-</kbd> / <kbd>=</kbd> ➔ <strong>Decrease / Increase Brightness</strong></li>
+                  <li><kbd>[</kbd> / <kbd>]</kbd> ➔ <strong>Decrease / Increase Animation Speed</strong></li>
+                  <li><kbd>\</kbd> ➔ <strong>Custom DIY Backlight Recording Mode</strong></li>
+                  <li><kbd>Esc</kbd> ➔ <strong>Instant Battery Level Gauge (10% to 100%)</strong></li>
+                  <li><kbd>Space</kbd> (Hold 3s) ➔ <strong>Factory Reset Keyboard</strong></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 4: Hardware Cheatsheet -->
+      <div class="tab-pane" id="tab-cheatsheet">
+        <div class="cheatsheet-grid">
+          <div class="cs-card">
+            <div class="cs-header">
+              <span class="cs-icon">📶</span>
+              <h3>Bluetooth Pairing & Switching</h3>
+            </div>
+            <div class="cs-body">
+              <div class="cs-row">
+                <span class="cs-action">Switch to Bluetooth:</span>
+                <span class="cs-shortcut">Set side toggle switch to <strong>"B"</strong></span>
+              </div>
+              <div class="cs-row">
+                <span class="cs-action">Pair Profile 1 (BT1):</span>
+                <span class="cs-shortcut">Hold <kbd>Fn</kbd> + <kbd>Q</kbd> for 3s (LED flashes fast)</span>
+              </div>
+              <div class="cs-row">
+                <span class="cs-action">Pair Profile 2 (BT2):</span>
+                <span class="cs-shortcut">Hold <kbd>Fn</kbd> + <kbd>W</kbd> for 3s</span>
+              </div>
+              <div class="cs-row">
+                <span class="cs-action">Pair Profile 3 (BT3):</span>
+                <span class="cs-shortcut">Hold <kbd>Fn</kbd> + <kbd>E</kbd> for 3s</span>
+              </div>
+              <div class="cs-row">
+                <span class="cs-action">Switch Between Devices:</span>
+                <span class="cs-shortcut">Short tap <kbd>Fn</kbd> + <kbd>Q / W / E</kbd></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="cs-card">
+            <div class="cs-header">
+              <span class="cs-icon">🔋</span>
+              <h3>Battery Check Gauge</h3>
+            </div>
+            <div class="cs-body">
+              <p>Because third-party keyboards don't always broadcast battery via macOS Bluetooth menus, the K530 has a built-in hardware battery indicator:</p>
+              <div class="battery-shortcut-box">
+                <div class="bs-title">Press: <kbd>Fn2</kbd> + <kbd>Esc</kbd></div>
+                <div class="battery-meter-vis">
+                  <span class="b-block">1: 10%</span>
+                  <span class="b-block">2: 20%</span>
+                  <span class="b-block">3: 30%</span>
+                  <span class="b-block">4: 40%</span>
+                  <span class="b-block">5: 50%</span>
+                  <span class="b-block">6: 60%</span>
+                  <span class="b-block">7: 70%</span>
+                  <span class="b-block">8: 80%</span>
+                  <span class="b-block">9: 90%</span>
+                  <span class="b-block">0: 100%</span>
+                </div>
+                <p class="bs-sub">Number keys 1 through 0 will illuminate in green/red showing the exact charge remaining.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="cs-card">
+            <div class="cs-header">
+              <span class="cs-icon">🔒</span>
+              <h3>Lock & Reset Shortcuts</h3>
+            </div>
+            <div class="cs-body">
+              <div class="cs-row">
+                <span class="cs-action">Lock Windows/Command Key:</span>
+                <span class="cs-shortcut"><kbd>Fn</kbd> + <kbd>Win</kbd> (Prevents accidental gaming exits)</span>
+              </div>
+              <div class="cs-row">
+                <span class="cs-action">Factory Reset:</span>
+                <span class="cs-shortcut">Hold <kbd>Fn2</kbd> + <kbd>Space</kbd> for 3 seconds</span>
+              </div>
+              <div class="cs-row">
+                <span class="cs-action">Toggle Caps Lock Magic Fn:</span>
+                <span class="cs-shortcut"><kbd>Fn</kbd> + <kbd>Caps</kbd></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- Notification Toast -->
+    <div class="toast" id="toast">
+      <span class="toast-icon">✓</span>
+      <span class="toast-msg" id="toastMsg">Configuration applied successfully!</span>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
+
